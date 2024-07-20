@@ -1,11 +1,20 @@
 import React from 'react';
 import logo from './logo.svg';
+import HoursDropdown from './Dropdown';
 import './App.css';
 
 function App() {
   const [durationInBed, setDurationInBed] = React.useState();
   const [durationAsleep, setDurationAsleep] = React.useState();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
+
+  React.useEffect(() => {
+    if(durationInBed && durationAsleep && durationInBed >= 0 && durationAsleep >= 0) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [durationAsleep, durationInBed])
 
   const buildIncrementArray = () => {
     const array = [];
@@ -16,37 +25,21 @@ function App() {
   }
 
   const handleDurationInBedChange = (e: React.ChangeEvent<any>) => {
-    if (!durationInBed) {
-      setDurationInBed(e.target.value);
-    }
+    console.log(e.target.value)
+    setDurationInBed(e.target.value);
   };
 
 
   const handleDurationAsleepChange = (e: React.ChangeEvent<any>) => {
-    if (!durationAsleep) {
-      setDurationAsleep(e.target.value);
-    }
+    setDurationAsleep(e.target.value);
   };
 
   return (
     <div className="App">
       <h1>Calculate Sleep Score</h1>
       <div>
-        <label htmlFor="durationInBed">Duration in bed:</label>
-        <select name="durationInBed" id="durationInBed" onChange={(e) => handleDurationInBedChange(e)}>
-          <option value="" selected>Select...</option>
-          { buildIncrementArray().map((increment) => {
-            return <option value={increment}>{increment/60} hours</option>
-          })}
-        </select>
-        
-        <label htmlFor="durationAsleep">Duration asleep:</label>
-        <select name="durationAsleep" id="durationAsleep">
-          <option value="" selected>Select...</option>
-          { buildIncrementArray().map((increment) => {
-            return <option value={increment}>{increment/60} hours</option>
-          })}
-        </select>
+        <HoursDropdown label="Duration in bed:" dropdownName="durationInBed" onChange={handleDurationInBedChange} options={buildIncrementArray()}/>
+        <HoursDropdown label="Duration asleep:" dropdownName="durationAsleep" onChange={handleDurationAsleepChange} options={buildIncrementArray()}/>
       </div>
       <button disabled={buttonDisabled}>Calculate</button>
     </div>
