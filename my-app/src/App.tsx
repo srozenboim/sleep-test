@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import HoursDropdown from './Dropdown';
 import axios from 'axios';
 import './App.css';
@@ -35,13 +34,17 @@ function App() {
     setDurationAsleep(e.target.value);
   };
 
-  const submitScore = async (score: number) => {
-    try {
-      const res = await axios.post('http://localhost:5001/api/submit', { number: score });
-      setMessage(res.data.success ? `Sleep score: ${score.toString()}` : 'Something went wrong');
-    } catch (error) {
-      setMessage('Something went wrong');
-    }
+  const submitScore = (score: number) => {
+    // Adding a timeout to make sure that the loading text is visible since the mock API is too fast
+    setTimeout(async () => {
+      try {
+        const res = await axios.post('http://localhost:5001/api/submit', { number: score });
+        setMessage(res.data.success ? `Sleep score: ${score.toString()}` : 'Something went wrong');
+      } catch (error) {
+        setMessage('Something went wrong');
+      }
+    }, 1000);
+    
   }
 
   const calculateScore = () => {
