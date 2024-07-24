@@ -1,6 +1,7 @@
 Sleep test calculator app:
 
-To get the app running run in separate terminal windows:
+To get the app running run
 
-yarn start
-yarn server run
+- cd my-app
+- `yarn start`
+- `yarn server run` (in a separate terminal window)
